@@ -1,0 +1,96 @@
+/* IMAGE LIGHTBOX */
+
+#imagelightbox{/*this is the main image displayed!*/
+	cursor: pointer;
+	position: fixed;
+	z-index: 10000;
+	-ms-touch-action: none;
+	touch-action: none;
+}
+
+#imagelightbox-overlay{
+	background-color: #000;
+	background-color: rgba( 0, 0, 0, .85 );
+	position: fixed;
+	z-index: 9998;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	visibility:hidden;
+	opacity:0;
+	-webkit-transition:opacity 0.2s,visibility 0.2s;
+	transition:opacity 0.2s,visibility 0.2s;
+}
+
+#imagelightbox-x{
+	color: #fff;
+	cursor:pointer;
+	color: rgba(255,255,255,0.5);
+	background:rgba(20,20,20,0.25);
+	opacity:0.5;
+	position: fixed;
+	z-index: 10002;
+	top: 4px;
+	right: 4px;
+	width:50px;
+	height:50px;
+	font:50px 'garamond','Apple Garamond';
+	line-height:50px;
+	text-align:center;
+	visibility:hidden;
+	opacity:0;
+	-webkit-border-radius:50%;
+	border-radius:50%;
+	-webkit-transition:opacity 0.2s,visibility 0.2s;
+	transition:opacity 0.2s,visibility 0.2s;
+}
+#imagelightbox-x:hover{
+	color: #fff;
+	background:rgba(20,20,20,0.5);
+}
+
+#imagelightbox-loading {
+	position: fixed;
+	z-index: 10003;
+	top: 50%;
+	left: 50%;
+	width: 60px;
+	height: 60px;
+	margin: -30px 0 0 -30px;
+	background-color: #fff;
+	-webkit-animation: rotateplane 1.2s infinite ease-in-out;
+	animation: rotateplane 1.2s infinite ease-in-out;
+	visibility:hidden;
+	opacity:0;
+	transition:opacity 0.2s,visibility 0.2s;
+}
+
+@-webkit-keyframes rotateplane {
+	0% { -webkit-transform: perspective(120px) }
+	50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+	100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+}
+
+@keyframes rotateplane {
+	0% {
+		transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+		-webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg) 
+	} 50% {
+		transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+		-webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg) 
+	} 100% {
+		transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+		-webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+	}
+}
+
+
+#imagelightbox-loading.visible,
+#imagelightbox-overlay.visible,
+#imagelightbox-x.visible{
+	visibility:visible;
+	opacity:1;
+	-webkit-transition:opacity 0.4s;
+	transition:opacity 0.4s;
+}
