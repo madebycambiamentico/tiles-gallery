@@ -5,7 +5,7 @@
 > As soon as I understand how this github works, I'll upload a working example.
 
 #### example page
-[face tiles example](http://cambiamentico.altervista.org/PAGES/experiments/faces-tiles/micro.php)
+<a href="http://cambiamentico.altervista.org/PAGES/experiments/faces-tiles/micro.php" target="_blank">face tiles example</a>
 
 ### Needed files
 
