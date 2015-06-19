@@ -98,7 +98,8 @@ function imageLightbox(_a,_b){
 			if ( imageWidth > screenWidth || imageHeight > screenHeight ){
 				var ratio;
 				if (options.fillMode == 2){
-					ratio = Math.max( 1, Math.min( imageHeight/screenHeight, imageWidth/screenWidth ) );
+					if (imageHeight < screenHeight || imageWidth < screenWidth) ratio = 1;
+					else ratio = Math.min( imageHeight/screenHeight, imageWidth/screenWidth );
 				}
 				else {
 					ratio = imageWidth/imageHeight > screenWidth/screenHeight ? imageWidth/screenWidth : imageHeight/screenHeight;
