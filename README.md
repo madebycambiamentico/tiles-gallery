@@ -13,6 +13,7 @@ for users:
 - [js] jquery.js
 - [js] square-gallery-lightbox.min.js
 - [css] square-gallery-lightbox.min.css
+- [images] big images, and related _square_ thumbnail
 
 for developers:
 - [js] jquery.js
@@ -20,6 +21,7 @@ for developers:
 - [js] image-lightbox-like.js
 - [css] square-gallery.css
 - [css] image-lightbox.css
+- [images] big images, and related _square_ thumbnail
 
 ### How to
 
