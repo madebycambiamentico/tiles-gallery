@@ -1,6 +1,7 @@
 # tiles-gallery
 
 ###### Gallery experiment with dynamic css tiles, less script possible, integrated lightbox with touch events.
+Now with multi galleries support!
 
 > As soon as I understand how this github works, I'll upload a working example.
 
