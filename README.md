@@ -48,7 +48,7 @@ you have to create a div with custom id, wherever you want to place the gallery.
 	//woops: add another image I forgotted... :)
 	squares.push(['IMAGES/squares/face-41.jpg', 'IMAGES/face-41.jpg']);
 	
-	//optionally TileAnimation() function accepts this bunch of parameters
+	//optionally TA() function accepts this bunch of parameters
 	//(string) selector, (array) images, (int) from, (int) how many tiles (multiple of 8), (int) fill mode for lightbox
 		//fill mode:
 		//0 : image fully contained in screen with margins
