@@ -1,4 +1,4 @@
-var ilbFunc = {
+var TAlib = {
 	overlay : {
 		created : false,
 		create : function(){
@@ -43,57 +43,58 @@ var ilbFunc = {
 	},
 	createDefault : function(){
 		$(function(){
-			ilbFunc.overlay.create();
-			ilbFunc.loader.create();
-			ilbFunc.closeButton.create();
+			TAlib.overlay.create();
+			TAlib.loader.create();
+			TAlib.closeButton.create();
 		});
-	}
+	},
+	allowRot : true
 };
 
-ilbFunc.createDefault();
+TAlib.createDefault();
 
-function TileAnimation(_a,_b,_c,_d,_fill){
+function TA(_a,_b,_c,_d,_fill,_e){
 	//private variables
 	var tiles,			//{div.tile html, img html, rotating}
-		images,			//[thumb, big]
 		gallery,			//container
 		max=0,			//max images to rotate (must be > nTiles)
-		nTiles=0,		//tiles to create
 		timer,
-		isRotating=false,
 		currents,		//array of image id showed in tiles
-		lightbox = new imageLightbox({
-				onStart: 	 function() { ilbFunc.overlay.on(); ilbFunc.closeButton.on(); self.stop(); },
-				onEnd:	 	 function() { ilbFunc.overlay.off(); ilbFunc.closeButton.off(); ilbFunc.loader.off(); self.rotate(); },
-				onLoadStart: function() { ilbFunc.loader.on(); },
-				onLoadEnd:	 function() { ilbFunc.loader.off(); },
-				fillMode: (typeof _fill === 'undefined' ? 2 : _fill)
-			}),
+		isRotating = false,
 		self = this;
 	//public variables
+	this.lightbox = new imageLightbox({
+			onStart: 	 function() { TAlib.overlay.on(); TAlib.closeButton.on(); TAlib.allowRot = false; self.stop(); },
+			onEnd:	 	 function() { TAlib.overlay.off(); TAlib.closeButton.off(); TAlib.loader.off(); TAlib.allowRot = true; self.rotate(); },
+			onLoadStart: function() { TAlib.loader.on(); },
+			onLoadEnd:	 function() { TAlib.loader.off(); },
+			fillMode: (typeof _fill === 'undefined' ? 2 : _fill)
+		});
+	this.images;					//[thumb, big]
+	this.nTiles = 0;				//tiles to create
 	this.rotMany = 1;				//how many tiles (maximum) to rotate at the same time
 	this.rotDuration = 650;		//tile transition duration [CSS], better rise some millisecond
-	this.rotDelay = 250;			//frequency to apply a rotation
+	this.rotDelay = 500;			//frequency to apply a rotation
 	this.probability = 0.85;	//probability to rotate a tile
 	//functions
-	this.ini = function(sContainerId, aImages, iFrom, iNum){
+	this.ini = function(sContainerId, aImages, iFrom, iNum, autoStart){
 		max = aImages.length;
-		nTiles = iNum;
-		if (max <= nTiles) return false;
+		self.nTiles = iNum;
+		if (max < self.nTiles) return false;
 			var tileeeeees = new Array(max)
 			for (var i=0;i<max;i++){
 				tileeeeees[i] = aImages[i][1];
 			}
-			lightbox.setGallery(tileeeeees);
-		images = aImages;
+			self.lightbox.setGallery(tileeeeees);
+		self.images = aImages;
 		tiles = new Array(max);
 		currents = new Array(max);
 		gallery = $(sContainerId).html('').addClass('square-gallery');
-		for (var i=0;i<nTiles;i++){
+		for (var i=0;i<self.nTiles;i++){
 			tiles[i] = {
 				rotating : false,
 				tile : $('<div class="tile"></div>'),
-				a : lightbox.addTrigger( $('<a class="zoom" href="'+aImages[iFrom+i][1]+'" target="_blank">').data('id',i) ),
+				a : self.lightbox.addTrigger( $('<a class="zoom" href="'+aImages[iFrom+i][1]+'" target="_blank">').data('id',i) ),
 				img : $('<img src="'+aImages[iFrom+i][0]+'">')
 			};
 			currents[i] = iFrom+i;
@@ -102,25 +103,38 @@ function TileAnimation(_a,_b,_c,_d,_fill){
 				.append(tiles[i].a)
 			);
 		}
-		self.rotate();
+		if (autoStart === true) self.rotate();
+		return self;
 	};
 	this.rotate = function(){
+		if (self.images.length <= 1 || !self.rotMany) return false;
 		isRotating = true;
-		var a = new Array(self.rotMany);
-		var x=0;
-		for (var i=0;i<a.length;i++){
-			do{
-				x = Math.floor(Math.random()*nTiles);
-			} while(a.indexOf(x) !== -1);
-			a[i] = x;
-			if (Math.random() <= self.probability) self.rotateTile(x);
+		if (self.rotMany > self.images.length - self.nTiles) self.rotMany = self.images.length - self.nTiles
+		if (!self.rotMany) return false;
+		if (TAlib.allowRot){
+			var a = new Array(self.rotMany);
+			var x=0;
+			for (var i=0;i<a.length;i++){
+				var maxstep = 20;
+				do{
+					x = Math.floor(Math.random()*self.nTiles);
+				} while(a.indexOf(x) !== -1 && maxstep-- > 0);
+				a[i] = x;
+				if (Math.random() <= self.probability) self.rotateTile(x);
+			}
 		}
 		clearTimeout(timer);
 		timer = setTimeout(function(){
-			self.rotate();
-		},self.rotDelay);
+				self.rotate();
+			}, self.rotDelay);
+		return self;
 	};
 	this.rotateTile = function(i){
+		if (typeof tiles[i] === 'undefined'){
+			console.log(tiles);
+			console.log(i);
+			return false;
+		}
 		if (tiles[i].rotating === true) return false;
 		tiles[i].rotating = true;
 		var newId=0;
@@ -128,30 +142,35 @@ function TileAnimation(_a,_b,_c,_d,_fill){
 			newId = Math.floor(Math.random()*max);
 		} while(currents.indexOf(newId) !== -1);
 		currents[i] = newId;
-		var newImg = $('<img src="'+images[newId][0]+'">');
+		var newImg = $('<img src="'+self.images[newId][0]+'">');
 		tiles[i].tile.append(newImg);
 		tiles[i].img.addClass('slide');
-		tiles[i].a.attr('href',images[newId][1]).data('id',newId);
+		tiles[i].a.attr('href',self.images[newId][1]).data('id',newId);
 		setTimeout(function(){
 			tiles[i].rotating = false;
 			tiles[i].img.remove();
 			tiles[i].img = newImg;
-		},self.rotDuration)
+		},self.rotDuration);
+		return self;
 	};
 	this.stop = function(){
 		clearTimeout(timer);
 		isRotating = false;
+		return self;
 	};
 	this.toggle = function(){
 		if (isRotating) self.stop();
 		else self.rotate();
+		return self;
 	}
 	//apply to html
 	if (typeof _a !== 'undefined' && typeof _b !== 'undefined'){
-		if (typeof _c === 'undefined') _c=0;
-		if (typeof _d === 'undefined') _d=_b.length;
+		if (typeof _c === 'undefined') _c = 0;
+		if (typeof _d === 'undefined') _d = _b.length;
+		if (typeof _e === 'undefined') _e = true;
 		$(function(){
-			self.ini(_a,_b,_c,_d);
+			self.ini(_a,_b,_c,_d,_e);
 		})
 	}
+	return this;
 }
