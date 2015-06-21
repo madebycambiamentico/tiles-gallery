@@ -53,12 +53,12 @@ you have to create a div with custom id, wherever you want to place the gallery.
 		//0 : image fully contained in screen with margins
 		//1 : as 0, but without margins
 		//2 : fill the whole screen (if possible)
-	var gallery = new TileAnimation('#gallery', squares, 0, 32, 0);
+	var gallery = new TA('#gallery', squares, 0, 32, 0);
 ```
 
 ### API
 
-You can set the _TileAnimation()_ parameters at any time:
+You can set the _TA()_ parameters at any time:
 
 ```javascript
 	gallery.ini("#custom-gallery-id", 5, 32, 2);
