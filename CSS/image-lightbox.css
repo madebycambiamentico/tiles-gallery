@@ -50,6 +50,32 @@
 	background:rgba(20,20,20,0.5);
 }
 
+#imagelightbox-desc{
+	position: fixed;
+	visibility:hidden;
+	bottom: 5px;
+	left: 0;
+	right: 0;
+	text-align: center;
+	z-index: 10005;
+}
+#imagelightbox-text{
+	background-color: #000;
+	background-color: rgba(0,0,0,0.6);
+	display: inline-block;
+	padding: 3px 6px;
+	color: #FFF;
+	text-shadow:1px 1px 1px #000;
+	opacity:0;
+	-webkit-transition:visibility 0.2s, opacity 0.2s;
+	transition:visibility 0.2s, opacity 0.2s;
+}
+#imagelightbox-desc:hover #imagelightbox-text{
+	opacity:1;
+	-webkit-transition:opacity 0.2s;
+	transition:opacity 0.2s;
+}
+
 #imagelightbox-loading {
 	position: fixed;
 	z-index: 10003;
@@ -88,7 +114,9 @@
 
 #imagelightbox-loading.visible,
 #imagelightbox-overlay.visible,
-#imagelightbox-x.visible{
+#imagelightbox-x.visible,
+#imagelightbox-desc.visible,
+#imagelightbox-desc.visible #imagelightbox-text.visible{
 	visibility:visible;
 	opacity:1;
 	-webkit-transition:opacity 0.4s;
