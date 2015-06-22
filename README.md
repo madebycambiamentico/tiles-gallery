@@ -1,7 +1,7 @@
 # tiles-gallery
 
 ###### Gallery experiment with dynamic css tiles, less script possible, integrated lightbox with touch events.
-Now with multi galleries support!
+Now with multi galleries support! Soon API for lightbox.
 
 > As soon as I understand how this github works, I'll upload a working example.
 
@@ -32,14 +32,14 @@ you have to create a div with custom id, wherever you want to place the gallery.
 ```html
 	<body>
 		...
-		<div id="gallery"></div>
+		<div id="custom-gallery-id"></div>
 		...
 	</body>
 ```
 
 ...then add few line of javascript:
 ```javascript
-	//images array must contain the thumbnail and the big image urls
+	//images array must contain the thumbnail, the big image urls and (optionally) a description
 	//here an example if you named all the files like "face-#", where # = (int) 1...40
 	//obviously you can also create an array manually, and/or with other languages.
 	var squares = new Array(40);
@@ -47,15 +47,13 @@ you have to create a div with custom id, wherever you want to place the gallery.
 		squares[i-1] = ['IMAGES/squares/face-'+i+'.jpg', 'IMAGES/face-'+i+'.jpg'];
 	}
 	//woops: add another image I forgotted... :)
-	squares.push(['IMAGES/squares/face-41.jpg', 'IMAGES/face-41.jpg']);
+	squares.push(['IMAGES/squares/face-41.jpg', 'IMAGES/face-41.jpg', "this is a description!\nWith new lines too."]);
 	
-	//optionally TA() function accepts this bunch of parameters
-	//(string) selector, (array) images, (int) from, (int) how many tiles (multiple of 8), (int) fill mode for lightbox
-		//fill mode:
-		//0 : image fully contained in screen with margins
-		//1 : as 0, but without margins
-		//2 : fill the whole screen (if possible)
-	var gallery = new TA('#gallery', squares, 0, 32, 0);
+	//optionally TA() function accepts a bunch of parameters. see API section
+	var gallery = new TA({
+		id : "#custom-gallery-id",
+		images : squares
+	});
 ```
 
 ### API
@@ -63,7 +61,21 @@ you have to create a div with custom id, wherever you want to place the gallery.
 You can set the _TA()_ parameters at any time:
 
 ```javascript
-	gallery.ini("#custom-gallery-id", 5, 32, 2);
+	gallery.ini({
+		id : "#custom-gallery-id",	//mandatory - no default
+			//the id of the html element to fill with tiles
+		images : squares		//mandatory - no default
+			//array containing array: url of thumbnail, url of original image, optional description.
+		from : 5,			//optional - default = 0
+			//define from what image create tiles
+		n : 32,				//optional - default = images length
+			//how many tiles initialize. For default CSS it should be a multiple of 8 for better visualization.
+		fill : 2,			//optional - default = 0		//fill mode:
+			//0 : image fully contained in screen with margins
+			//1 : as 0, but without margins
+			//2 : fill the whole screen (if possible)
+		autostart : true		//optional - default = true
+	});
 ```
 
 You can manipulate the default behavior setting:
@@ -72,7 +84,7 @@ You can manipulate the default behavior setting:
 	//how many tiles rotate at the same time:
 	gallery.rotMany = 1; //(int) 0, 1, 2...
 	//frequency to apply a random rotation:
-	gallery.rotDelay = 250; //(int) milliseconds
+	gallery.rotDelay = 500; //(int) milliseconds
 	//probability of rotation for each called tile (depends by <rotMany>)
 	gallery.probability = 0.85; //(int) milliseconds
 	//minimum delay before apply another rotation to same tile.
