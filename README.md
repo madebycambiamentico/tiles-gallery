@@ -2,6 +2,7 @@
 
 ###### Gallery experiment with dynamic css tiles, less script possible, integrated lightbox with touch events.
 Now with multi galleries support! Soon API for lightbox.
+minified size: *12.5 kb (js + css)*.
 
 > As soon as I understand how this github works, I'll upload a working example.
 
@@ -70,7 +71,7 @@ You can set the _TA()_ parameters at any time:
 			//define from what image create tiles
 		n : 32,				//optional - default = images length
 			//how many tiles initialize. For default CSS it should be a multiple of 8 for better visualization.
-		fill : 2,			//optional - default = 0		//fill mode:
+		fill : 2,			//optional - default = 0
 			//0 : image fully contained in screen with margins
 			//1 : as 0, but without margins
 			//2 : fill the whole screen (if possible)
