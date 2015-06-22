@@ -7,8 +7,8 @@ minified size: *12.5 kb (js + css)*.
 > As soon as I understand how this github works, I'll upload a working example.
 
 #### example page
-<a href="http://cambiamentico.altervista.org/PAGES/experiments/faces-tiles/micro.php" target="_blank">face tiles example</a> (lightbox fill mode = 2 - fill screen)
-<a href="http://cambiamentico.altervista.org/PAGES/experiments/faces-tiles/" target="_blank">face tiles example 2 [main page]</a> (lightbox fill mode = 0 - images fully contained in screen)
+- <a href="http://cambiamentico.altervista.org/PAGES/experiments/faces-tiles/" target="_blank">face tiles example 2 [main page]</a> (lightbox fill mode = 0 - images fully contained in screen)
+- <a href="http://cambiamentico.altervista.org/PAGES/experiments/faces-tiles/micro.php" target="_blank">face tiles example</a> (lightbox fill mode = 2 - fill screen)
 
 ### Needed files
 
