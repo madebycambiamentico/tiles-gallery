@@ -7,6 +7,7 @@ function imageLightbox(_a,_b){
 		swipeDiff		= 0,
 		image				= $(),
 		targets			= [],
+		description		= '',
 		inProgress		= false
 		options			= {},
 		targetID			= 0;
@@ -46,7 +47,9 @@ function imageLightbox(_a,_b){
 	this.setOptions = function(opt){
 		options = $.extend(
 		{
-			selector:			'id="imagelightbox"',
+			selector:			'imagelightbox',
+			caption:				'imagelightbox-text',
+			specialitems:		['imagelightbox-desc','imagelightbox-text'],
 			allowedTypes:		'png|jpg|jpeg|gif',
 			animationSpeed:	250,
 			preloadNext:		true,
@@ -102,7 +105,7 @@ function imageLightbox(_a,_b){
 					else ratio = Math.min( imageHeight/screenHeight, imageWidth/screenWidth );
 				}
 				else {
-					ratio = imageWidth/imageHeight > screenWidth/screenHeight ? imageWidth/screenWidth : imageHeight/screenHeight;
+					ratio	 = imageWidth/imageHeight > screenWidth/screenHeight ? imageWidth/screenWidth : imageHeight/screenHeight;
 				}
 				imageWidth	/= ratio;
 				imageHeight	/= ratio;
@@ -114,9 +117,11 @@ function imageLightbox(_a,_b){
 				'top':    ( $( window ).height() - imageHeight ) / 2 + 'px',
 				'left':   ( $( window ).width() - imageWidth ) / 2 + 'px'
 			});
+			//create description
+			$('#'+options.caption).html( targets[targetID].desc.replace(/\r\n|\n|\r/g,"<br>") );
 		};
 		//start loading image
-		tmpImage.src	= image.attr( 'src' );
+		tmpImage.src	= image.attr('src');
 	};
 	
 	this.loadImage = function( direction ){
@@ -150,7 +155,7 @@ function imageLightbox(_a,_b){
 		if( options.onLoadStart !== false ) options.onLoadStart();
 		setTimeout( function(){
 			//setup "image"
-			image = $( '<img '+options.selector+'>' )
+			image = $( '<img id="'+options.selector+'">' )
 			.load( function(){
 				image.appendTo( 'body' );	//create image
 				self.setImage();				//set dimensions of image
@@ -176,14 +181,14 @@ function imageLightbox(_a,_b){
 					var NEXTtargetID = targetID+1;
 					if (NEXTtargetID < 0) NEXTtargetID = targets.length-1;
 					else if (NEXTtargetID >= targets.length) NEXTtargetID = 0;
-					$( '<img>' ).attr( 'src', targets[NEXTtargetID] ).load();
+					$( '<img>' ).attr( 'src', targets[NEXTtargetID].src ).load();
 				}
 			})
 			.error( function(){
 				//in case error occurs, call the custom end-function
 				if( options.onLoadEnd !== false ) options.onLoadEnd();
 			})
-			.attr( 'src', targets[targetID] )
+			.attr( 'src', targets[targetID].src )
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//apply touch/click/any other event applyed to the #imagelightbox.
@@ -259,6 +264,7 @@ function imageLightbox(_a,_b){
 			e.preventDefault();
 			if( options.onStart !== false ) options.onStart();
 			targetID = Number($(this).data('id'));
+			description = $(this).data('desc');
 			self.loadImage();
 		});
 	}
@@ -271,7 +277,7 @@ function imageLightbox(_a,_b){
 		//close lightbox if clicking out of #imagelightbox [optional]
 		if (options.quitOnDocClick){
 			$( document ).on( hasTouch ? 'touchend' : 'click', function(e){
-				if( image.length && !$(e.target).is(image) ) self.quitLightbox();
+				if( image.length && !$(e.target).is(image) && options.specialitems.indexOf(e.target.id) === -1 ) self.quitLightbox();
 			});
 		}
 		
