@@ -29,7 +29,7 @@ for developers:
 ### How to
 
 After putting the link to scripts and css,
-you have to create a div with custom id, wherever you want to place the gallery...
+you have to create a div with custom id, wherever you want to place the gallery in HTML body...
 ```html
 	<body>
 		...
@@ -71,10 +71,11 @@ You can set the _TA()_ parameters at any time:
 			//define from what image create tiles
 		n : 32,				//optional - default = images length
 			//how many tiles initialize. For default CSS it should be a multiple of 8 for better visualization.
-		fill : 2,			//optional - default = 0
+		fill : 2,			//optional - default = 3
 			//0 : image fully contained in screen with margins
 			//1 : as 0, but without margins
 			//2 : fill the whole screen (if possible)
+			//3 : auto adapt based on screen area (uses 0, 1, 2 the bigger is the screen)
 		autostart : true		//optional - default = true
 	});
 ```
