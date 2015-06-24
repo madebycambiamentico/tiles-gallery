@@ -61,7 +61,7 @@ function imageLightbox(_a,_b){
 			onEnd:				false,
 			onLoadStart:		false,
 			onLoadEnd:			false,
-			fillMode:			2//0 = leave borders, //1 = fill width or height, //2 = fill screen.
+			fillMode:			3//0 = leave borders, //1 = fill width or height, //2 = fill screen, //3 = auto adjust
 		 }, opt )
 	};
 	
@@ -89,18 +89,26 @@ function imageLightbox(_a,_b){
 		var screenWidth	= $(window).width(),
 			screenHeight	= $(window).height(),
 			tmpImage			= new Image();
+		//auto fill mode on?
+		var fill = options.fillMode;
+		if (fill == 3){
+			var area = screenWidth * screenHeight / 10000;
+			if (area < 35) fill = 2;
+			else if (area < 70) fill = 1;
+			else fill = 0;
+		}
 		//when temporary image loaded (may be in cache) update displayed image:
 		tmpImage.onload = function(){
 			imageWidth		= tmpImage.width;
 			imageHeight		= tmpImage.height;
 			//set up the displayed image dimensions on screen:
-			if (options.fillMode == 0){
+			if (fill == 0){
 				screenWidth	*= 0.9;
 				screenHeight *= 0.95;
 			}
 			if ( imageWidth > screenWidth || imageHeight > screenHeight ){
 				var ratio;
-				if (options.fillMode == 2){
+				if (fill == 2){
 					if (imageHeight < screenHeight || imageWidth < screenWidth) ratio = 1;
 					else ratio = Math.min( imageHeight/screenHeight, imageWidth/screenWidth );
 				}
