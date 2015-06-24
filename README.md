@@ -2,7 +2,7 @@
 
 ###### Gallery experiment with dynamic css tiles, less script possible, integrated lightbox with touch events.
 Now with multi galleries support! Soon API for lightbox.
-minified size: *12.5 kb (js + css)*.
+minified size: *12.58 kb (9.16 kb js + 3.42 kb css)*.
 
 > As soon as I understand how this github works, I'll upload a working example.
 
