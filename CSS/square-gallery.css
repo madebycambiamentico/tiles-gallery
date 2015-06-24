@@ -1,8 +1,11 @@
+.square-gallery{
+	display:block;
+	padding:0;
+	max-width:1440px;/* default tile 180*180; default max row has 8 tiles */
+	margin:0 auto;
+}
 .square-gallery *{
 	margin:0;
-	padding:0;
-}
-.square-gallery{
 	padding:0;
 }
 /* clearfix for floating elements - not for IE6/7/8 */
@@ -70,13 +73,13 @@
 	visibility:visible;
 }
 
-@media screen and (max-width: 800px){
+@media screen and (max-width: 720px){
 	.tile{
 		width:25%;/* 1/4 */
 		padding-bottom:25%;
 	}
 }
-@media screen and (max-width: 450px){
+@media screen and (max-width: 360px){
 	.tile{
 		width:50%;/* 1/2 */
 		padding-bottom:50%;
