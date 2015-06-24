@@ -56,15 +56,16 @@ var TAlib = {
 			$('#imagelightbox-desc').removeClass('visible');
 		}
 	},
-	createDefault : function(){
+	createDefault : function(textClass){
 		$(function(){
 			TAlib.overlay.create();
 			TAlib.loader.create();
-			TAlib.caption.create();//eventually pass string "visible" to have default caption always visible.
+			TAlib.caption.create(textClass); //eventually pass string "visible" to have default caption always visible.
 			TAlib.closeButton.create();
 		});
 	},
-	allowRot : true
+	allowRot : true,
+	TAs : []
 };
 
 //create default lightbox parts
@@ -72,18 +73,17 @@ TAlib.createDefault();
 
 function TA(obj){
 	//-------------------------------------------------------- private variables
-	var tiles,			//{div.tile html, img html, rotating}
-		gallery,			//container
-		max=0,			//max images to rotate (must be > nTiles)
+	var tiles,					//{div.tile html, img html, rotating}
+		gallery,					//container
+		max=0,					//max images to rotate (must be > nTiles)
 		timer,
-		currents,		//array of image id showed in tiles
-		isRotating = false,
-		curid = 0,
+		currents,				//array of image id showed in tiles
+		isRotating = false,	//for toggle() and stop() functions
 		self = this;
 	//-------------------------------------------------------- public variables
 	this.lightbox = new imageLightbox({
-			onStart: 	 function() { TAlib.overlay.on(); TAlib.closeButton.on(); TAlib.allowRot = false; self.stop(); },
-			onEnd:	 	 function() { TAlib.overlay.off(); TAlib.closeButton.off(); TAlib.caption.off(); TAlib.loader.off(); TAlib.allowRot = true; self.rotate(); },
+			onStart: 	 function() { TAlib.overlay.on(); TAlib.closeButton.on(); $.each(TAlib.TAs,function(){this.stop();}); },
+			onEnd:	 	 function() { TAlib.overlay.off(); TAlib.closeButton.off(); TAlib.caption.off(); TAlib.loader.off(); $.each(TAlib.TAs,function(){this.rotate();}); },
 			onLoadStart: function() { TAlib.loader.on(); TAlib.caption.off(); },
 			onLoadEnd:	 function() { TAlib.loader.off(); TAlib.caption.on(); }
 		});
@@ -103,7 +103,7 @@ function TA(obj){
 			from : 0,
 			n : max,
 			autostart : true,
-			fill : 1
+			fill : 3
 		}, obj);
 		//check if tiles are more than available images
 		if (max < obj.from + obj.n){
@@ -159,8 +159,10 @@ function TA(obj){
 				do{
 					x = Math.floor(Math.random()*self.nTiles);
 				} while(a.indexOf(x) !== -1 && maxstep-- > 0);
-				a[i] = x;
-				if (Math.random() <= self.probability) self.rotateTile(x);
+				if (maxstep){
+					a[i] = x;
+					if (Math.random() <= self.probability) self.rotateTile(x);
+				}
 			}
 		}
 		//apply next rotation after some time...
@@ -212,5 +214,10 @@ function TA(obj){
 			self.ini(obj);
 		})
 	}
+	
+	//add this object to global list
+	TAlib.TAs.push(this);
+	
+	//end :)
 	return this;
 }
