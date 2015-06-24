@@ -1,3 +1,8 @@
+/******************************************
+square tiles gallery + integrated ligthbox
+by mbc (http://altervista.cambiamentico.org/PAGES/experiments/faces-tiles/)
+thanks to imagelightbox (http://osvaldas.info/image-lightbox-responsive-touch-friendly)
+******************************************/
 var TAlib = {
 	overlay : {
 		created : false,
