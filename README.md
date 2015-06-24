@@ -2,13 +2,14 @@
 
 ###### Gallery experiment with dynamic css tiles, less script possible, integrated lightbox with touch events.
 Now with multi galleries support! Soon API for lightbox.
-minified size: *12.58 kb (9.16 kb js + 3.42 kb css)*.
+
+Minified size: *12.58 kb (9.16 kb js + 3.42 kb css)*.
 
 > As soon as I understand how this github works, I'll upload a working example.
 
 #### example page
-- <a href="http://cambiamentico.altervista.org/PAGES/experiments/faces-tiles/" target="_blank">face tiles example 2 [main page]</a> (lightbox fill mode = 0 - images fully contained in screen)
-- <a href="http://cambiamentico.altervista.org/PAGES/experiments/faces-tiles/micro.php" target="_blank">face tiles example</a> (lightbox fill mode = 2 - fill screen)
+- <a href="http://cambiamentico.altervista.org/PAGES/experiments/faces-tiles/" target="_blank">face tiles example 2 [main page]</a> (lightbox fill mode = 3: auto)
+- <a href="http://cambiamentico.altervista.org/PAGES/experiments/faces-tiles/micro.php" target="_blank">face tiles example</a> (lightbox fill mode = 2: fill screen)
 
 ### Needed files
 
