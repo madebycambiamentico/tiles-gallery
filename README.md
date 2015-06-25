@@ -17,7 +17,7 @@ for users:
 - [js] jquery.js, link or download at <a href="https://jquery.com/" target="_blank">jquery site</a>
 - [js] square-gallery-lightbox.min.js
 - [css] square-gallery-lightbox.min.css
-- [images] big images, and related _square_ thumbnail
+- [images] big images, and related _square_ thumbnail (at least 180&times;180 px)
 
 for developers:
 - [js] jquery.js
@@ -86,6 +86,8 @@ You can set the _TA()_ parameters at any time, and start the gallery automatic c
 		n : 32,
 			//optional - default = images length
 			//how many tiles initialize. For default CSS it should be a multiple of 8 for better visualization.
+			//If you want to use other multiples, then the last row wouldn't be filled.
+			//For using other multiples it's recommended to change the CSS accordingly.
 		fill : 2,
 			//optional - default = 3
 			//0 : image fully contained in screen with margins
