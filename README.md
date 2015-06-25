@@ -32,8 +32,8 @@ for developers:
 Load the required stylesheet files, jQuery library and other required resources in the head section of the document
 ```html
 	<head>
-		<script src="jquery.min.js">
-		<script src="image-gallery-lightbox.min.js">
+		<script src="jquery.min.js"></script>
+		<script src="image-gallery-lightbox.min.js"></script>
 		...
 		<link rel="stylesheet" href="image-gallery-lightbox.min.css">
 		...
