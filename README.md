@@ -14,7 +14,7 @@ Minified size: *12.58 kb (9.16 kb js + 3.42 kb css)*.
 ### Needed files
 
 for users:
-- [js] jquery.js
+- [js] jquery.js, link or download at <a href="https://jquery.com/" target="_blank">jquery site</a>
 - [js] square-gallery-lightbox.min.js
 - [css] square-gallery-lightbox.min.css
 - [images] big images, and related _square_ thumbnail
@@ -29,8 +29,18 @@ for developers:
 
 ### How to
 
-After putting the link to scripts and css,
-you have to create a div with custom id, wherever you want to place the gallery in HTML body...
+Load the required stylesheet files, jQuery library and other required resources in the head section of the document
+```html
+	<head>
+		<script src="jquery.min.js">
+		<script src="image-gallery-lightbox.min.js">
+		...
+		<link rel="stylesheet" href="image-gallery-lightbox.min.css">
+		...
+	</head>
+```
+
+Put a div with custom id in the body section of the document, wherever you want to place the gallery.
 ```html
 	<body>
 		...
@@ -39,7 +49,7 @@ you have to create a div with custom id, wherever you want to place the gallery 
 	</body>
 ```
 
-...then add few line of javascript:
+Last: add few line of javascript:
 ```javascript
 	//images array must contain the thumbnail, the big image urls and (optionally) a description
 	//here an example if you named all the files like "face-#", where # = (int) 1...40
@@ -60,24 +70,30 @@ you have to create a div with custom id, wherever you want to place the gallery 
 
 ### API
 
-You can set the _TA()_ parameters at any time:
+You can set the _TA()_ parameters at any time, and start the gallery automatic creation:
 
 ```javascript
 	gallery.ini({
-		id : "#custom-gallery-id",	//mandatory - no default
+		id : "#custom-gallery-id",
+			//mandatory - no default
 			//the id of the html element to fill with tiles
-		images : squares		//mandatory - no default
-			//array containing array: url of thumbnail, url of original image, optional description.
-		from : 5,			//optional - default = 0
+		images : squares
+			//mandatory - no default
+			//array containing arrays with url of thumbnail, url of original image, optional description.
+		from : 5,
+			//optional - default = 0
 			//define from what image create tiles
-		n : 32,				//optional - default = images length
+		n : 32,
+			//optional - default = images length
 			//how many tiles initialize. For default CSS it should be a multiple of 8 for better visualization.
-		fill : 2,			//optional - default = 3
+		fill : 2,
+			//optional - default = 3
 			//0 : image fully contained in screen with margins
 			//1 : as 0, but without margins
 			//2 : fill the whole screen (if possible)
 			//3 : auto adapt based on screen area (uses 0, 1, 2 the bigger is the screen)
-		autostart : true		//optional - default = true
+		autostart : true
+			//optional - default = true
 	});
 ```
 
@@ -86,10 +102,13 @@ You can manipulate the default behavior setting:
 ```javascript
 	//how many tiles rotate at the same time:
 	gallery.rotMany = 1; //(int) 0, 1, 2...
+	
 	//frequency to apply a random rotation:
 	gallery.rotDelay = 500; //(int) milliseconds
+	
 	//probability of rotation for each called tile (depends by <rotMany>)
 	gallery.probability = 0.85; //(int) milliseconds
+	
 	//minimum delay before apply another rotation to same tile.
 	//MUST be at least long as the CSS transition (default 600ms)
 	gallery.rotDuration = 650; //(int) milliseconds
@@ -100,10 +119,13 @@ And you can stop/restart/apply a rotation manually:
 ```javascript
 	//stop tiles sliding:
 	gallery.stop();
+	
 	//start tiles sliding:
 	gallery.rotate();
+	
 	//toggle tiles sliding:
 	gallery.toggle();
+	
 	//force a tile rotation
 	gallery.rotateTile(5);//index must exist, eg. 5th in the array <squares>
 ```
