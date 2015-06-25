@@ -33,9 +33,9 @@ Load the required stylesheet files, jQuery library and other required resources 
 ```html
 	<head>
 		<script src="jquery.min.js"></script>
-		<script src="image-gallery-lightbox.min.js"></script>
+		<script src="square-gallery-lightbox.min.js"></script>
 		...
-		<link rel="stylesheet" href="image-gallery-lightbox.min.css">
+		<link rel="stylesheet" href="square-gallery-lightbox.min.css">
 		...
 	</head>
 ```
