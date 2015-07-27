@@ -206,49 +206,83 @@ function imageLightbox(_a,_b){
 			var swipeStart	 = 0,
 				swipeEnd	 = 0,
 				imagePosLeft = 0;
-			image
-			.on( hasPointers ? 'pointerup MSPointerUp' : 'click', function(e){
-				e.preventDefault();
-				//stop/quit lightbox:
-				if( options.quitOnImgClick ){
-					self.self.quitLightbox();
-					return false;
-				}
-				if( wasTouched(e.originalEvent) ) return true;
-				//get where it was released the pointer:
-				var posX = ( e.pageX || e.originalEvent.pageX ) - e.target.offsetLeft;
-				targetID += ( imageWidth / 2 > posX ? -1 : 1 );
-				if (targetID < 0) targetID = targets.length-1;
-				else if (targetID >= targets.length) targetID = 0;
-				//load and show next image (prev/next)
-				self.loadImage( imageWidth / 2 > posX ? 'left' : 'right' );
-			})
-			.on( 'touchstart pointerdown MSPointerDown', function(e){
-				if( !wasTouched( e.originalEvent ) || options.quitOnImgClick ) return true;
-				if( isCssTransitionSupport ) imagePosLeft = parseInt( image.css( 'left' ) );
-				swipeStart = e.originalEvent.pageX || e.originalEvent.touches[ 0 ].pageX;
-			})
-			.on( 'touchmove pointermove MSPointerMove', function(e){
-				if( !wasTouched( e.originalEvent ) || options.quitOnImgClick ) return true;
-				e.preventDefault();
-				swipeEnd = e.originalEvent.pageX || e.originalEvent.touches[ 0 ].pageX;
-				swipeDiff = swipeStart - swipeEnd;
-				if( isCssTransitionSupport ) cssTransitionTranslateX( image, -swipeDiff + 'px', 0 );
-				else image.css( 'left', imagePosLeft - swipeDiff + 'px' );
-			})
-			.on( 'touchend touchcancel pointerup pointercancel MSPointerUp MSPointerCancel', function(e){
-				if( !wasTouched( e.originalEvent ) || options.quitOnImgClick ) return true;
-				if( Math.abs( swipeDiff ) > 50 ){
-					targetID += ( swipeDiff < 0 ? -1 : +1 );
-					if (targetID < 0) targetID = targets.length-1;
-					else if (targetID >= targets.length) targetID = 0;
-					self.loadImage( swipeDiff > 0 ? 'right' : 'left' );	
-				}
-				else{
-					if( isCssTransitionSupport ) cssTransitionTranslateX( image, 0 + 'px', options.animationSpeed / 1000 );
-					else image.animate({ 'left': imagePosLeft + 'px' }, options.animationSpeed / 2 );
-				}
-			});
+			
+			if (!hasTouch && !hasPointers){
+				var isSwiping = false, swipeMax = 0;
+				image
+				.mousedown(function(e){
+					e.preventDefault();
+					isSwiping = true;
+					swipeMax = 0;
+					if( isCssTransitionSupport ) imagePosLeft = parseInt( image.css( 'left' ) );
+					swipeStart = e.originalEvent.pageX;
+				})
+				.mousemove(function(e){
+					if (!isSwiping) return true;
+					swipeEnd = e.originalEvent.pageX;
+					swipeDiff = swipeStart - swipeEnd;
+					swipeMax = Math.max(swipeMax,Math.abs(swipeDiff));
+					if( isCssTransitionSupport ) cssTransitionTranslateX( image, -swipeDiff + 'px', 0 );
+					else image.css( 'left', imagePosLeft - swipeDiff + 'px' );
+				})
+				.mouseup(function(e){
+					if (!isSwiping) return true;
+					isSwiping = false;
+					if( Math.abs( swipeDiff ) > 50 ){
+						targetID += ( swipeDiff < 0 ? -1 : +1 );
+						if (targetID < 0) targetID = targets.length-1;
+						else if (targetID >= targets.length) targetID = 0;
+						self.loadImage( swipeDiff > 0 ? 'right' : 'left' );	
+					}
+					else{console.log(swipeMax)
+						if (swipeMax < 5){
+							if( options.quitOnImgClick ){
+								self.self.quitLightbox();
+								return false;
+							}
+							var posX = ( e.pageX || e.originalEvent.pageX ) - e.target.offsetLeft;
+							if (posX < imageWidth/3 || posX > 2*imageWidth/3){
+								targetID += ( imageWidth / 2 > posX ? -1 : 1 );
+								if (targetID < 0) targetID = targets.length-1;
+								else if (targetID >= targets.length) targetID = 0;
+								//load and show next image (prev/next)
+								self.loadImage( imageWidth / 2 > posX ? 'left' : 'right' );
+								return false;
+							}
+						}
+						if( isCssTransitionSupport ) cssTransitionTranslateX( image, 0 + 'px', options.animationSpeed / 1000 );
+						else image.animate({ 'left': imagePosLeft + 'px' }, options.animationSpeed / 2 );
+					}
+				});
+			} else {
+				image
+				.on( 'touchstart pointerdown MSPointerDown', function(e){
+					if( !wasTouched( e.originalEvent ) || options.quitOnImgClick ) return true;
+					if( isCssTransitionSupport ) imagePosLeft = parseInt( image.css( 'left' ) );
+					swipeStart = e.originalEvent.pageX || e.originalEvent.touches[ 0 ].pageX;
+				})
+				.on( 'touchmove pointermove MSPointerMove', function(e){
+					if( !wasTouched( e.originalEvent ) || options.quitOnImgClick ) return true;
+					e.preventDefault();
+					swipeEnd = e.originalEvent.pageX || e.originalEvent.touches[ 0 ].pageX;
+					swipeDiff = swipeStart - swipeEnd;
+					if( isCssTransitionSupport ) cssTransitionTranslateX( image, -swipeDiff + 'px', 0 );
+					else image.css( 'left', imagePosLeft - swipeDiff + 'px' );
+				})
+				.on( 'touchend touchcancel pointerup pointercancel MSPointerUp MSPointerCancel', function(e){
+					if( !wasTouched( e.originalEvent ) || options.quitOnImgClick ) return true;
+					if( Math.abs( swipeDiff ) > 50 ){
+						targetID += ( swipeDiff < 0 ? -1 : +1 );
+						if (targetID < 0) targetID = targets.length-1;
+						else if (targetID >= targets.length) targetID = 0;
+						self.loadImage( swipeDiff > 0 ? 'right' : 'left' );	
+					}
+					else{
+						if( isCssTransitionSupport ) cssTransitionTranslateX( image, 0 + 'px', options.animationSpeed / 1000 );
+						else image.animate({ 'left': imagePosLeft + 'px' }, options.animationSpeed / 2 );
+					}
+				});
+			}
 		},
 		options.animationSpeed + 100);
 	}
